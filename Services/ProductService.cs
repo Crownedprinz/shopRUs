@@ -73,6 +73,14 @@ namespace shopRUs.Services
             return tbl_Products;
         }
 
-    
+        public List<int> InvalidProducts(List<int> ids)
+        {
+            List<int> listOfWrongIds = new List<int>();
+            foreach(var item in ids)
+            {
+                if (!IsProductExisting(item)) listOfWrongIds.Add(item);
+            }
+            return listOfWrongIds;
+        }
     }
 }

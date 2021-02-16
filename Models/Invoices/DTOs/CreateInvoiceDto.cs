@@ -11,6 +11,6 @@ namespace shopRUs.Models.Invoices.DTOs
         [Required]
         public int id { get; set; }
         public int customerId { get; set; }
-        public ProductDto products { get; set; }
+        public List<ProductDto> products { get; set; }
     }
 }

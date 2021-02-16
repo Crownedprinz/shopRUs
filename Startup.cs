@@ -36,6 +36,10 @@ namespace shopRUs
             services.AddTransient<IDiscountsService, DiscountsService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopRUs API", Version = "v1" });

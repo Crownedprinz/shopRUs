@@ -16,5 +16,6 @@ namespace shopRUs.Interfaces
         Task<Tbl_Products> DeleteProductAsync(int id);
         bool IsProductExisting(int id);
         Task<Tbl_Products> UpdateProductAsync(int id, Tbl_Products Tbl_Products);
+        List<int> InvalidProducts(List<int> ids);
     }
 }

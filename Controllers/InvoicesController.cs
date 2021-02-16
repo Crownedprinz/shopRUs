@@ -21,13 +21,15 @@ namespace shopRUs.Controllers
         private readonly IInvoiceService _invoiceService;
         private readonly ICustomerService _customerService;
         private readonly IDiscountsService _discountsService;
+        private readonly IProductService _productService;
 
         public InvoicesController(IInvoiceService invoiceService, ICustomerService customerService,
-           IDiscountsService discountsService)
+           IDiscountsService discountsService, IProductService productService )
         {
             _invoiceService = invoiceService;
             _discountsService = discountsService;
             _customerService = customerService;
+            _productService = productService;
         }
 
         // GET: api/Invoices/get-total-invoice-amount
@@ -49,10 +51,20 @@ namespace shopRUs.Controllers
         [HttpPost]
         public async Task<ActionResult<Tbl_Invoices>> CreateInvoice(CreateInvoiceDto request)
         {
+            List<int> listOfProductIds = new List<int>();
             if(!ModelState.IsValid) return BadRequest();
             if (!_customerService.IsCustomerExisting(request.customerId))
             {
                 return NotFound("Customer not found");
+            }
+            //Get all list of Products Ids
+            request.products.ForEach(x => listOfProductIds.Add(x.productsId));
+            //Check if any Product Id is not valid
+            
+             var productResult = _productService.InvalidProducts(listOfProductIds);
+            if(productResult.Any())
+            {
+                return NotFound("Some Products Ids were Invalid: " +String.Join(",",productResult));
             }
             var result = await _invoiceService.CreateInvoiceAsync(request);
             return CreatedAtAction("GetTotalAmountByInvoiceNumber", new { id = result.id }, result);

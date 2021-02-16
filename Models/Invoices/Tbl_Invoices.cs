@@ -19,9 +19,7 @@ namespace shopRUs.Models.Invoices
         [ForeignKey("customer")]
         public int customerId { get; set; }
         public Tbl_Customer customer { get; set; }
-        [ForeignKey("innvoiceItems")]
-        public int innvoiceItemsId { get; set; }
-        public Tbl_InvoiceItems innvoiceItems { get; set; }
+        public List<Tbl_InvoiceItems> innvoiceItems { get; set; }
 
         [ForeignKey("discounts")]
         public int discountsId { get; set; }
@@ -36,11 +34,15 @@ namespace shopRUs.Models.Invoices
         [Required]
         public decimal totalProductsAmount { get; set; }
         [Required]
-        public decimal subTotal { get; set; }
-        [Required]
-        public decimal total { get; set; }
+        public decimal totalAmount { get; set; }
 
         [Required]
         public DateTime issueDate { get; set; }
+
+        internal void updateTotalWithDiscount()
+        {
+            totalAmount = (totalProductsAmount - totalDiscountAmount);
+        }
+
     }
 }
