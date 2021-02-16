@@ -33,9 +33,24 @@ namespace shopRUs.Models.Customers
         public bool isEmployee { get; set; }
         [JsonIgnore]
         public DateTime timestamp { get; set; }
+
+        //Check if customer has stayed with shopRUs for over 2 years
         public bool isCustomerLoyal()
         {
-            return true;
+            DateTime zeroTime = new DateTime(1, 1, 1);
+
+            DateTime dateCreated = timestamp.Date;
+            DateTime current = DateTime.Now.Date;
+
+            TimeSpan span = current - dateCreated;
+            // Because we start at year 1 for the Gregorian
+            // calendar, we must subtract a year here.
+            int years = (zeroTime + span).Year - 1;
+
+            // 1, where my other algorithm resulted in 0.
+            if (years >= 2) return true;
+            else
+            return false;
         }
     }
 }
